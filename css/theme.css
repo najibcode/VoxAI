@@ -1,0 +1,51 @@
+body { 
+  background-color: #060e20; 
+  color: #dee5ff; 
+}
+
+.parallax-bg { 
+  background-attachment: fixed; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover; 
+}
+
+.glass-panel { 
+  background: rgba(25, 37, 64, 0.6); 
+  backdrop-filter: blur(24px); 
+  border: 1px solid rgba(133, 173, 255, 0.1); 
+}
+
+.gradient-text { 
+  background: linear-gradient(135deg, #85adff 0%, #c180ff 100%); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+}
+
+.gradient-btn { 
+  background: linear-gradient(135deg, #85adff 0%, #c180ff 100%); 
+}
+
+.glow-hover:hover { 
+  box-shadow: 0 0 20px rgba(133, 173, 255, 0.4); 
+}
+
+.waveform-bar { 
+  width: 4px; 
+  border-radius: 2px; 
+  animation: bounce 1.2s ease-in-out infinite; 
+}
+
+@keyframes bounce { 
+  0%, 100% { height: 8px; } 
+  50% { height: 24px; } 
+}
+
+.pulse-live { 
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
+}
+
+@keyframes pulse { 
+  0%, 100% { opacity: 1; } 
+  50% { opacity: 0.5; } 
+}
