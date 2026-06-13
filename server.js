@@ -103,6 +103,7 @@ const OLLAMA_MODEL = trimEnv(process.env.OLLAMA_MODEL) || 'gemma4:latest';
 const PORT = parseInt(trimEnv(process.env.PORT) || '3000', 10) || 3000;
 const AI_PROVIDER = trimEnv(process.env.AI_PROVIDER) || 'ollama';
 const GEMINI_API_KEY = trimEnv(process.env.GEMINI_API_KEY);
+const GEMINI_MODEL = trimEnv(process.env.GEMINI_MODEL) || 'gemini-2.5-flash';
 
 const twilioConfigured =
   !!(TWILIO_ACCOUNT_SID &&
@@ -259,7 +260,7 @@ async function callGemini(messages) {
       });
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -778,7 +779,7 @@ app.get('/api/health', async (req, res) => {
     ngrok: !!NGROK_URL,
     ollama: AI_PROVIDER === 'ollama' ? ollamaOk : undefined,
     gemini: AI_PROVIDER === 'gemini' ? !!GEMINI_API_KEY : undefined,
-    model: AI_PROVIDER === 'gemini' ? 'gemini-1.5-flash' : OLLAMA_MODEL
+    model: AI_PROVIDER === 'gemini' ? GEMINI_MODEL : OLLAMA_MODEL
   });
 });
 
@@ -790,7 +791,7 @@ app.listen(PORT, async () => {
   console.log('╠══════════════════════════════════════════════╣');
   console.log(`║  Dashboard:  http://localhost:${PORT}            ║`);
   console.log(`║  API:        http://localhost:${PORT}/api         ║`);
-  const aiModelStr = AI_PROVIDER === 'gemini' ? 'Gemini (1.5 Flash)' : `Ollama (${OLLAMA_MODEL})`;
+  const aiModelStr = AI_PROVIDER === 'gemini' ? `Gemini (${GEMINI_MODEL})` : `Ollama (${OLLAMA_MODEL})`;
   console.log(`║  AI Model:   ${aiModelStr.padEnd(31)}║`);
   console.log('╠══════════════════════════════════════════════╣');
 
