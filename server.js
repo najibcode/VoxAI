@@ -101,6 +101,8 @@ const NGROK_URL = normalizePublicUrl(process.env.NGROK_URL);
 const OLLAMA_URL = trimEnv(process.env.OLLAMA_URL) || 'http://localhost:11434';
 const OLLAMA_MODEL = trimEnv(process.env.OLLAMA_MODEL) || 'gemma4:latest';
 const PORT = parseInt(trimEnv(process.env.PORT) || '3000', 10) || 3000;
+const AI_PROVIDER = trimEnv(process.env.AI_PROVIDER) || 'ollama';
+const GEMINI_API_KEY = trimEnv(process.env.GEMINI_API_KEY);
 
 const twilioConfigured =
   !!(TWILIO_ACCOUNT_SID &&
@@ -219,6 +221,80 @@ LANGUAGE RULES:
 
 FINAL RULE: Output ONLY JSON. No explanations. No extra text.`;
 
+// ===== Helper: Call Gemini =====
+async function callGemini(messages) {
+  try {
+    if (!GEMINI_API_KEY) {
+      throw new Error('GEMINI_API_KEY is not configured in .env');
+    }
+
+    const contents = [];
+    messages.forEach(m => {
+      if (m.role === 'system') return;
+      
+      const role = (m.role === 'assistant' || m.role === 'model') ? 'model' : 'user';
+      let textContent = m.content || '';
+
+      if (role === 'model') {
+        try {
+          const parsed = JSON.parse(textContent);
+          if (parsed && typeof parsed === 'object') {
+            textContent = parsed.reply || textContent;
+          }
+        } catch (e) {
+          // Not JSON
+        }
+      }
+
+      contents.push({
+        role: role,
+        parts: [{ text: textContent }]
+      });
+    });
+
+    if (contents.length === 0) {
+      contents.push({
+        role: 'user',
+        parts: [{ text: 'Introduce yourself' }]
+      });
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        },
+        contents: contents,
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Gemini API error: ${response.status} - ${errText}`);
+    }
+
+    const data = await response.json();
+    const aiText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text || '').trim();
+
+    let parsed = null;
+    try { parsed = JSON.parse(aiText); } catch (e) {
+      const m = aiText.match(/\{[\s\S]*\}/);
+      if (m) { try { parsed = JSON.parse(m[0]); } catch (e2) { } }
+    }
+
+    return parsed || { reply: 'I apologize, could you please repeat that?', intent: 'Neutral', action: 'Continue', language: 'English' };
+  } catch (error) {
+    console.error('Gemini error:', error.message);
+    return { reply: 'I apologize for the technical issue. Let me call you back shortly.', intent: 'Neutral', action: 'End Call', language: 'English' };
+  }
+}
+
 // ===== Helper: Call Ollama =====
 async function callOllama(messages) {
   try {
@@ -247,6 +323,15 @@ async function callOllama(messages) {
   } catch (error) {
     console.error('Ollama error:', error.message);
     return { reply: 'I apologize for the technical issue. Let me call you back shortly.', intent: 'Neutral', action: 'End Call', language: 'English' };
+  }
+}
+
+// ===== Helper: Call Active AI Engine =====
+async function callAI(messages) {
+  if (AI_PROVIDER === 'gemini') {
+    return await callGemini(messages);
+  } else {
+    return await callOllama(messages);
   }
 }
 
@@ -452,7 +537,7 @@ app.post('/handle-speech', async (req, res) => {
   if (!callState.processingPromise) {
     const processOllama = async () => {
       try {
-        const aiResponse = await callOllama(callState.messages);
+        const aiResponse = await callAI(callState.messages);
         callState.latestAiResponse = aiResponse;
       } catch (e) {
         callState.latestAiResponse = { reply: 'Sorry, I am having trouble connecting.', intent: 'Neutral', action: 'Continue', language: 'English' };
@@ -597,6 +682,13 @@ app.post('/call-status-update', (req, res) => {
   res.sendStatus(200);
 });
 
+// Chat endpoint for frontend simulator (routes to configured AI provider)
+app.post('/api/chat', async (req, res) => {
+  const { messages } = req.body;
+  const aiResponse = await callAI(messages || []);
+  res.json(aiResponse);
+});
+
 // ===== REST API for DB =====
 
 // Contacts
@@ -670,19 +762,23 @@ app.get('/api/verified-numbers', (req, res) => {
 // ===== Health Check =====
 app.get('/api/health', async (req, res) => {
   let ollamaOk = false;
-  try {
-    const r = await fetch(`${OLLAMA_URL}/api/tags`);
-    ollamaOk = r.ok;
-  } catch (e) { }
+  if (AI_PROVIDER === 'ollama') {
+    try {
+      const r = await fetch(`${OLLAMA_URL}/api/tags`);
+      ollamaOk = r.ok;
+    } catch (e) { }
+  }
 
   res.json({
     server: 'running',
+    provider: AI_PROVIDER,
     twilio: twilioConfigured,
     twilioTrial: isTwilioTrial,
     verifiedNumbers: isTwilioTrial ? verifiedNumbers : undefined,
     ngrok: !!NGROK_URL,
-    ollama: ollamaOk,
-    model: OLLAMA_MODEL
+    ollama: AI_PROVIDER === 'ollama' ? ollamaOk : undefined,
+    gemini: AI_PROVIDER === 'gemini' ? !!GEMINI_API_KEY : undefined,
+    model: AI_PROVIDER === 'gemini' ? 'gemini-1.5-flash' : OLLAMA_MODEL
   });
 });
 
@@ -694,7 +790,8 @@ app.listen(PORT, async () => {
   console.log('╠══════════════════════════════════════════════╣');
   console.log(`║  Dashboard:  http://localhost:${PORT}            ║`);
   console.log(`║  API:        http://localhost:${PORT}/api         ║`);
-  console.log(`║  AI Model:   ${OLLAMA_MODEL.padEnd(31)}║`);
+  const aiModelStr = AI_PROVIDER === 'gemini' ? 'Gemini (1.5 Flash)' : `Ollama (${OLLAMA_MODEL})`;
+  console.log(`║  AI Model:   ${aiModelStr.padEnd(31)}║`);
   console.log('╠══════════════════════════════════════════════╣');
 
   if (!twilioConfigured) {

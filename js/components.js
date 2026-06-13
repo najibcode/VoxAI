@@ -767,27 +767,17 @@ FINAL RULE: Output ONLY JSON. No explanations. No extra text. No formatting outs
       // Ask AI for its opening line
       let introText = 'Hello! This is calling from ABC Bank. We have a pre-approved personal loan for you starting at just 8.5 percent interest. Do you have a quick moment?';
       try {
-        const response = await fetch('http://localhost:11434/api/chat', {
+        const response = await fetch(`${API_BASE}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            'model': 'gemma4:latest',
             'messages': [
-              { 'role': 'system', 'content': SYSTEM_PROMPT },
               { 'role': 'user', 'content': 'The call just connected. You are calling the customer. Introduce yourself naturally and tell them why you are calling. Keep it short and friendly.' }
-            ],
-            'stream': false,
-            'format': 'json'
+            ]
           })
         });
         if (response.ok) {
-          const data = await response.json();
-          let aiText = (data.message.content || '').trim();
-          let parsed = null;
-          try { parsed = JSON.parse(aiText); } catch(e) {
-            const m = aiText.match(/\{[\s\S]*\}/);
-            if (m) { try { parsed = JSON.parse(m[0]); } catch(e2){} }
-          }
+          const parsed = await response.json();
           if (parsed && parsed.reply) introText = parsed.reply;
           // Store in conversation history
           ollamaMessages.push({ 'role': 'user', 'content': 'The call just connected. Introduce yourself.' });
@@ -932,26 +922,16 @@ FINAL RULE: Output ONLY JSON. No explanations. No extra text. No formatting outs
         // Language instruction — AI detects and responds in same language
         const langInstruction = ' IMPORTANT: Detect the language the user is speaking (even if in Roman script). Reply in that SAME language. Always include the detected language in the "language" field of your JSON response.';
 
-        const response = await fetch('http://localhost:11434/api/chat', {
+        const response = await fetch(`${API_BASE}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            'model': 'gemma4:latest',
-            'messages': [{ 'role': 'system', 'content': SYSTEM_PROMPT + langInstruction }, ...ollamaMessages],
-            'stream': false,
-            'format': 'json'
+            'messages': ollamaMessages
           })
         });
 
-        if (!response.ok) throw new Error('Ollama ' + response.status);
-        const data = await response.json();
-        let aiText = (data.message.content || '').trim();
-
-        let parsed = null;
-        try { parsed = JSON.parse(aiText); } catch(e) {
-          const m = aiText.match(/\{[\s\S]*\}/);
-          if (m) { try { parsed = JSON.parse(m[0]); } catch(e2){} }
-        }
+        if (!response.ok) throw new Error('AI Server ' + response.status);
+        const parsed = await response.json();
 
         thinkingBubble.remove();
         isProcessing = false;
