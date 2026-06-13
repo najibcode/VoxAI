@@ -28,6 +28,8 @@
 <div id="landing-nav" class="hidden md:flex gap-8 items-center transition-opacity">
 <a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#demo">Demo Video</a>
 <a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#about">How It Works</a>
+<a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#features">Features</a>
+<a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#faqs">FAQs</a>
 <a class="px-4 py-2 rounded-lg bg-surface-container-high border border-outline-variant/30 text-white font-manrope font-bold text-sm hover:bg-surface-bright transition-all" href="#auth">Login / Sign Up</a>
 </div>
 <!-- Dashboard Nav (visible after login) -->
@@ -139,6 +141,96 @@
         </div>
       </div>
       <div class="absolute -top-10 -right-10 w-64 h-64 bg-primary/20 blur-[100px] z-0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-24 px-6 max-w-7xl mx-auto border-t border-white/5" id="features">
+  <div class="text-center mb-16">
+    <span class="text-primary font-bold tracking-widest text-xs uppercase mb-4 block">System Features</span>
+    <h2 class="font-headline text-4xl font-extrabold mb-4">Core Technology Engine</h2>
+    <p class="text-on-surface-variant max-w-2xl mx-auto">VoxAI combines local low-latency AI reasoning with advanced VoIP webhooks to deliver fluid voice interaction.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="glass-panel p-8 rounded-3xl hover:scale-[1.03] transition-all hover:border-primary/40 duration-300">
+      <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary text-2xl">translate</span>
+      </div>
+      <h3 class="font-bold text-lg mb-3">Multilingual Engine</h3>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Auto-detects caller languages and shifts voices on the fly between English, Hindi, Tamil, and Telugu.</p>
+    </div>
+    <div class="glass-panel p-8 rounded-3xl hover:scale-[1.03] transition-all hover:border-secondary/40 duration-300">
+      <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-secondary text-2xl">shield</span>
+      </div>
+      <h3 class="font-bold text-lg mb-3">On-Premises Privacy</h3>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Runs 100% locally using Ollama. Keeps bank customer transcripts completely secure and off public clouds.</p>
+    </div>
+    <div class="glass-panel p-8 rounded-3xl hover:scale-[1.03] transition-all hover:border-tertiary/40 duration-300">
+      <div class="w-12 h-12 rounded-2xl bg-tertiary/10 flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-tertiary text-2xl">hourglass_empty</span>
+      </div>
+      <h3 class="font-bold text-lg mb-3">Zero-Latency Fillers</h3>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Interject natural speech fillers like "Right..." or "Mmm-hmm..." while Ollama performs background inference.</p>
+    </div>
+    <div class="glass-panel p-8 rounded-3xl hover:scale-[1.03] transition-all hover:border-green-500/40 duration-300">
+      <div class="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-green-400 text-2xl">database</span>
+      </div>
+      <h3 class="font-bold text-lg mb-3">SQLite Auto-Logging</h3>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Categorizes customer sentiment (Interested/Neutral) and commits full transcripts to local SQLite3 databases.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5" id="faqs">
+  <div class="text-center mb-16">
+    <span class="text-secondary font-bold tracking-widest text-xs uppercase mb-4 block">Got Questions?</span>
+    <h2 class="font-headline text-4xl font-extrabold mb-4">Frequently Asked Questions</h2>
+    <p class="text-on-surface-variant">Technical details about running and configuring the VoxAI server.</p>
+  </div>
+  <div class="space-y-4">
+    <!-- FAQ 1 -->
+    <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300">
+      <button class="faq-toggle w-full text-left px-8 py-6 flex justify-between items-center hover:bg-white/5 transition-colors">
+        <span class="font-bold text-base">What AI models are recommended for the telecaller?</span>
+        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+      </button>
+      <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-8 bg-surface-container-low/30">
+        <p class="py-6 text-sm text-on-surface-variant leading-relaxed">We recommend running `gemma4:latest` or `llama3:8b` locally via Ollama. The model must support JSON mode, as the server parses structured JSON responses (`reply`, `intent`, `action`, `language`) to determine Twilio's next action.</p>
+      </div>
+    </div>
+    <!-- FAQ 2 -->
+    <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300">
+      <button class="faq-toggle w-full text-left px-8 py-6 flex justify-between items-center hover:bg-white/5 transition-colors">
+        <span class="font-bold text-base">How does regional language auto-detection work?</span>
+        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+      </button>
+      <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-8 bg-surface-container-low/30">
+        <p class="py-6 text-sm text-on-surface-variant leading-relaxed">Ollama automatically detects the language spoken by the user based on the speech-to-text transcript. It returns the language name in its JSON payload, which tells the Express server to switch subsequent text-to-speech audio streams to regional voices like `Polly.Aditi` for Hindi, or native voices for Tamil and Telugu.</p>
+      </div>
+    </div>
+    <!-- FAQ 3 -->
+    <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300">
+      <button class="faq-toggle w-full text-left px-8 py-6 flex justify-between items-center hover:bg-white/5 transition-colors">
+        <span class="font-bold text-base">Are my phone logs and credentials secure?</span>
+        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+      </button>
+      <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-8 bg-surface-container-low/30">
+        <p class="py-6 text-sm text-on-surface-variant leading-relaxed">Yes. All sensitive Twilio credentials and ngrok tunnel tokens remain local in your `.env` file and are never pushed to external clouds. The SQLite database is created locally in the project folder and holds all transcripts and contact lists offline.</p>
+      </div>
+    </div>
+    <!-- FAQ 4 -->
+    <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300">
+      <button class="faq-toggle w-full text-left px-8 py-6 flex justify-between items-center hover:bg-white/5 transition-colors">
+        <span class="font-bold text-base">How does the system handle call latency?</span>
+        <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+      </button>
+      <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-8 bg-surface-container-low/30">
+        <p class="py-6 text-sm text-on-surface-variant leading-relaxed">Local LLM inference can take 1-3 seconds. To prevent awkward silences, the server immediately returns a natural conversational filler (e.g. "Mmm-hmm", "Just a second...") to the Twilio stream and uses a redirection loop (`/wait-for-ai`) to play the complete response once ready.</p>
+      </div>
     </div>
   </div>
 </section>

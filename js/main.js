@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.UIComponents.initAnalyticsChart();
     window.UIComponents.initAgentConfig();
     window.UIComponents.initIntegrations();
+    window.UIComponents.initFaq();
     window.UIComponents.initLogout();
     
     // Brief load delay to show greeting toast

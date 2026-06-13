@@ -1469,6 +1469,36 @@ FINAL RULE: Output ONLY JSON. No explanations. No extra text. No formatting outs
     }
   },
 
+  // 12. FAQ Section Accordion
+  initFaq() {
+    const toggles = document.querySelectorAll('.faq-toggle');
+    toggles.forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        const item = e.currentTarget.closest('.glass-panel');
+        const content = item.querySelector('.faq-content');
+        const icon = e.currentTarget.querySelector('.material-symbols-outlined');
+        
+        // Toggle active state
+        const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+        
+        // Close all other accordions
+        document.querySelectorAll('.faq-content').forEach(c => {
+          c.style.maxHeight = '0px';
+          const otherIcon = c.closest('.glass-panel').querySelector('.material-symbols-outlined');
+          if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+        });
+
+        if (!isOpen) {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          if (icon) icon.style.transform = 'rotate(180deg)';
+        } else {
+          content.style.maxHeight = '0px';
+          if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+  },
+
   // Sign Out Button
   initLogout() {
     const logoutBtn = document.getElementById('logout-btn');
