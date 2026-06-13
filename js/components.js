@@ -956,7 +956,7 @@ FINAL RULE: Output ONLY JSON. No explanations. No extra text. No formatting outs
       } catch (error) {
         thinkingBubble.remove();
         isProcessing = false;
-        appendBubble('Connection issue. Please ensure Ollama is running.', false);
+        appendBubble('Connection issue. Please ensure the AI service is online and configured.', false);
         this.showToast('AI Error: ' + error.message, 'error');
         // Mic is already running — just update status
         if (callStarted && !callEnded) {
