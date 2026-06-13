@@ -11,6 +11,12 @@ VoxAI by Vedaspark is a premium, state-of-the-art AI-driven outbound telecalling
 
 ![VoxAI Dashboard Screenshot](screen.png)
 
+### 📺 Live Demo Video
+
+[![VoxAI Video Demo](https://img.youtube.com/vi/-cDl9Ycsoy8/0.jpg)](https://youtu.be/-cDl9Ycsoy8)
+
+*Click the image above to watch the product demonstration video on YouTube.*
+
 ---
 
 ## 🗺️ System Architecture
