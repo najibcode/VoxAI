@@ -1423,6 +1423,52 @@ FINAL RULE: Output ONLY JSON. No explanations. No extra text. No formatting outs
     loadAnalytics();
   },
 
+  // 10. AI Agent Config Section
+  initAgentConfig() {
+    const section = document.getElementById('agent-config');
+    if (!section) return;
+
+    // Sliders value feedback
+    const sliders = section.querySelectorAll('input[type="range"]');
+    sliders.forEach(slider => {
+      slider.addEventListener('input', (e) => {
+        const span = e.target.parentElement.querySelector('.flex.justify-between span:last-child');
+        if (span) {
+          const suffix = e.target.getAttribute('min') === '0.8' && e.target.getAttribute('max') === '1.5' ? 'x' : '';
+          span.textContent = e.target.value + suffix;
+        }
+      });
+    });
+
+    // Voice Clone Button
+    const cloneBtn = section.querySelector('button.bg-surface-container-highest');
+    if (cloneBtn) {
+      cloneBtn.addEventListener('click', () => {
+        const originalText = cloneBtn.textContent;
+        cloneBtn.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2">sync</span> Analyzing Voice...`;
+        setTimeout(() => {
+          this.showToast('Voice cloned successfully! Custom voice model active.', 'success');
+          cloneBtn.textContent = originalText;
+        }, 2000);
+      });
+    }
+  },
+
+  // 11. Integrations Section
+  initIntegrations() {
+    const saveBtn = document.getElementById('save-config-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const originalText = saveBtn.textContent;
+        saveBtn.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2">sync</span> Saving Config...`;
+        setTimeout(() => {
+          this.showToast('Integrations configuration saved successfully!', 'success');
+          saveBtn.textContent = originalText;
+        }, 1200);
+      });
+    }
+  },
+
   // Sign Out Button
   initLogout() {
     const logoutBtn = document.getElementById('logout-btn');

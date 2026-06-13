@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.UIComponents.initContactSearch();
     window.UIComponents.initExpandableLogs();
     window.UIComponents.initAnalyticsChart();
+    window.UIComponents.initAgentConfig();
+    window.UIComponents.initIntegrations();
     window.UIComponents.initLogout();
     
     // Brief load delay to show greeting toast

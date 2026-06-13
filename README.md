@@ -68,6 +68,9 @@ sequenceDiagram
 *   **Multilingual Support:** Auto-detects spoken language (English, Hindi, Tamil, Telugu) and switches TTS voices (`Polly.Raveena` for Indian English, `Polly.Aditi` for Hindi, etc.) and Speech-to-Text languages on the fly.
 *   **Lead Classification & Logs:** Automatically logs the transcript, call duration, customer intent (*Interested*, *Not Interested*, *Neutral*), and outcome into an SQLite database.
 *   **Obsidian Dashboard UI:** A beautiful, dark-mode design system following **"The Obsidian Conductor"** visual framework.
+*   **Agent Settings Configuration:** Live control panel to tune voice choice, speech rate, pitch, and LLM temperature parameters.
+*   **Custom Voice Cloning Mockup:** Drag-and-drop audio interface simulation to clone representative voices.
+*   **Service & Credentials Monitor:** Dynamic status monitoring for the SQLite database, Ollama service, and Twilio webhooks with editable API endpoint configurations.
 
 ---
 

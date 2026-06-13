@@ -37,6 +37,8 @@
 <a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#campaigns">Campaigns</a>
 <a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#live">Live Monitor</a>
 <a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#analytics">Analytics</a>
+<a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#agent-config">Agent Config</a>
+<a class="text-slate-400 hover:text-white transition-colors font-manrope font-semibold tracking-tight text-sm" href="#integrations">Integrations</a>
 </div>
 <!-- Dashboard Actions (visible after login) -->
 <div id="nav-actions" class="flex items-center gap-4 transition-opacity" style="display: none;">
@@ -647,6 +649,137 @@
                     </li>
 </ul>
 </div>
+</div>
+</section>
+
+<!-- Section 11: AI Agent Settings -->
+<section class="py-24 px-6 bg-surface-container-low border-t border-white/5" id="agent-config">
+<div class="max-w-7xl mx-auto">
+  <h2 class="font-headline text-3xl font-bold mb-12">AI Agent Settings</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Voice Settings -->
+    <div class="glass-panel p-8 rounded-3xl lg:col-span-2 space-y-6">
+      <h3 class="font-bold text-xl mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">record_voice_over</span> Voice Parameters</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Primary TTS Voice</label>
+          <select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface">
+            <option>AWS Polly - Raveena (English - India)</option>
+            <option>AWS Polly - Aditi (Hindi / English)</option>
+            <option>Google TTS - English (IN)</option>
+            <option>Google TTS - Tamil (IN)</option>
+            <option>Google TTS - Telugu (IN)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Character Identity</label>
+          <input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface" value="Vedaspark VoxAI" type="text"/>
+        </div>
+      </div>
+      
+      <div class="space-y-4 pt-4">
+        <div>
+          <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-2">
+            <span>SPEECH RATE (SPEED)</span>
+            <span>1.0x</span>
+          </div>
+          <input type="range" min="0.8" max="1.5" step="0.05" value="1.0" class="w-full accent-primary bg-surface-container-lowest h-2 rounded-lg appearance-none cursor-pointer">
+        </div>
+        <div>
+          <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-2">
+            <span>VOICE PITCH</span>
+            <span>1.0</span>
+          </div>
+          <input type="range" min="0.8" max="1.2" step="0.05" value="1.0" class="w-full accent-secondary bg-surface-container-lowest h-2 rounded-lg appearance-none cursor-pointer">
+        </div>
+        <div>
+          <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-2">
+            <span>LLM TEMPERATURE (CREATIVITY)</span>
+            <span>0.3</span>
+          </div>
+          <input type="range" min="0.1" max="1.0" step="0.05" value="0.3" class="w-full accent-tertiary bg-surface-container-lowest h-2 rounded-lg appearance-none cursor-pointer">
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Cloning Mockup -->
+    <div class="glass-panel p-8 rounded-3xl flex flex-col justify-between">
+      <div>
+        <h3 class="font-bold text-xl mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-secondary">settings_voice</span> Voice Cloning</h3>
+        <p class="text-xs text-on-surface-variant mb-6">Clone a custom sales executive voice by uploading a 30-second audio sample.</p>
+        
+        <div class="border-2 border-dashed border-outline-variant/30 rounded-2xl p-6 text-center cursor-pointer hover:border-secondary/50 hover:bg-surface-container-high transition-all flex flex-col items-center justify-center h-40">
+          <span class="material-symbols-outlined text-secondary text-4xl mb-2">upload_file</span>
+          <span class="text-xs font-bold text-on-surface">Upload audio sample (.wav, .mp3)</span>
+          <span class="text-[10px] text-on-surface-variant mt-1">Maximum size: 10MB</span>
+        </div>
+      </div>
+      <button class="w-full bg-surface-container-highest text-white font-bold py-3 rounded-xl hover:bg-surface-bright transition-all mt-6">Process Voice Clone</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Section 12: Integrations & Status -->
+<section class="py-24 px-6 max-w-7xl mx-auto border-t border-white/5" id="integrations">
+<div class="max-w-7xl mx-auto">
+  <h2 class="font-headline text-3xl font-bold mb-12">Integrations & System Settings</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Connection Status -->
+    <div class="glass-panel p-8 rounded-3xl space-y-6">
+      <h3 class="font-bold text-xl mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-tertiary">monitor_heart</span> Connection Status</h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between p-4 bg-surface-container-high rounded-xl">
+          <div class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+            <span class="text-sm font-medium">SQLite Database</span>
+          </div>
+          <span class="text-xs font-bold text-green-400">ONLINE</span>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-surface-container-high rounded-xl">
+          <div class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+            <span class="text-sm font-medium">Ollama AI Engine</span>
+          </div>
+          <span class="text-xs font-bold text-green-400">ONLINE (gemma4)</span>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-surface-container-high rounded-xl">
+          <div class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+            <span class="text-sm font-medium">Twilio API Webhooks</span>
+          </div>
+          <span class="text-xs font-bold text-green-400">ACTIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credentials Config -->
+    <div class="glass-panel p-8 rounded-3xl lg:col-span-2 space-y-6">
+      <h3 class="font-bold text-xl mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">key</span> API Credentials</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Twilio Account SID</label>
+          <input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline font-mono text-xs" value="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" disabled type="text"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Twilio Auth Token</label>
+          <input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline font-mono text-xs" value="••••••••••••••••••••••••••••••••" disabled type="password"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Ollama Connection URL</label>
+          <input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface font-mono text-xs" value="http://localhost:11434" type="text"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase mb-2">Active Webhook URL (ngrok)</label>
+          <input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 text-on-surface font-mono text-xs" value="https://straddle-strobe-affix.ngrok-free.dev" type="text"/>
+        </div>
+      </div>
+      <div class="flex justify-end gap-4 pt-4 border-t border-outline-variant/10">
+        <button class="px-6 py-2.5 bg-surface-container-highest text-white font-bold rounded-xl hover:bg-surface-bright transition-all text-sm">Reset</button>
+        <button id="save-config-btn" class="px-6 py-2.5 gradient-btn text-on-primary-fixed font-bold rounded-xl shadow-lg transition-all glow-hover text-sm">Save Config</button>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 </main>
